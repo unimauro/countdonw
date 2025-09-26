@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuenta Regresiva Deadline</title>
+  <link href="https://fonts.cdnfonts.com/css/the-led-display-st" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/counter-dial" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .countdown {
+      font-size: 5em;
+      margin-top: 20vh;
+      font-family: 'The Led Display St', sans-serif;
+      font-weight: normal;
+      color: lime;
+      transition: color 0.5s ease;
+    }
+    .tile {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 10px;
+      font-size: 1em;
+    }
+    .event {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .event .countdown-small {
+      font-size: 1.6em;
+      font-family: 'Counter Dial', monospace;
+      font-weight: normal;
+      color: lime;
+      transition: color 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="mainCountdown" class="countdown"></div>
+
+  <div class="event">
+    <div>27 de septiembre 9:00 AM hora Perú — Entrega RecuperaMax</div>
+    <div id="event1" class="countdown-small"></div>
+  </div>
+  <div class="event">
+    <div>5 de octubre 12:00 PM hora Perú — Primera Entrega funcional 50% Dash</div>
+    <div id="event2" class="countdown-small"></div>
+  </div>
+  <div class="event">
+    <div>10 de octubre 12:00 PM hora Perú — Entrega Final 100% Dash</div>
+    <div id="event3" class="countdown-small"></div>
+  </div>
+
+  <div class="tile" id="timeTile"></div>
+
+  <script>
+    function updateCountdowns() {
+      const now = new Date();
+
+      const deadline = new Date("2025-09-30T13:00:00Z"); // 7am Denver = 13:00 UTC
+      const event1 = new Date("2025-09-27T14:00:00Z"); // 9am Lima = 14:00 UTC
+      const event2 = new Date("2025-10-05T17:00:00Z"); // 12pm Lima = 17:00 UTC
+      const event3 = new Date("2025-10-10T17:00:00Z"); // 12pm Lima = 17:00 UTC
+
+      function formatDiff(diff) {
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / (3600 * 24));
+        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+
+      function applyColors(el, diff, isSpecial = false) {
+        const hoursLeft = diff / (1000 * 60 * 60);
+        if (isSpecial) {
+          if (hoursLeft <= 1) el.style.color = "red";
+          else if (hoursLeft <= 3) el.style.color = "purple";
+          else if (hoursLeft <= 6) el.style.color = "blue";
+          else el.style.color = "yellow";
+        } else {
+          if (hoursLeft <= 10) el.style.color = "red";
+          else el.style.color = "lime";
+        }
+      }
+
+      const mainDiff = deadline - now;
+      const mainEl = document.getElementById("mainCountdown");
+      mainEl.textContent = formatDiff(mainDiff);
+      applyColors(mainEl, mainDiff);
+
+      const event1Diff = event1 - now;
+      const event1El = document.getElementById("event1");
+      event1El.textContent = formatDiff(event1Diff);
+      applyColors(event1El, event1Diff, true);
+
+      const event2Diff = event2 - now;
+      const event2El = document.getElementById("event2");
+      event2El.textContent = formatDiff(event2Diff);
+      applyColors(event2El, event2Diff);
+
+      const event3Diff = event3 - now;
+      const event3El = document.getElementById("event3");
+      event3El.textContent = formatDiff(event3Diff);
+      applyColors(event3El, event3Diff);
+
+      const denverTime = new Date().toLocaleString("es-PE", { timeZone: "America/Denver" });
+      const limaTime = new Date().toLocaleString("es-PE", { timeZone: "America/Lima" });
+      document.getElementById("timeTile").textContent = `Denver: ${denverTime} | Lima: ${limaTime}`;
+    }
+
+    setInterval(updateCountdowns, 1000);
+    updateCountdowns();
+  </script>
+</body>
+</html>
