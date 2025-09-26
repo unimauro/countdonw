@@ -34,14 +34,45 @@
     }
     .event {
       margin-top: 20px;
-      font-size: 1.2em;
+      font-size: 1.1em;
     }
     .event .countdown-small {
-      font-size: 1.6em;
+      font-size: 1.4em;
       font-family: 'Counter Dial', monospace;
       font-weight: normal;
       color: lime;
       transition: color 0.5s ease;
+    }
+
+    /* Ajustes Responsive */
+    @media (max-width: 768px) {
+      .countdown {
+        font-size: 3em;
+        margin-top: 15vh;
+      }
+      .event {
+        font-size: 1em;
+      }
+      .event .countdown-small {
+        font-size: 1.2em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .countdown {
+        font-size: 2em;
+        margin-top: 10vh;
+      }
+      .event {
+        font-size: 0.9em;
+      }
+      .event .countdown-small {
+        font-size: 1em;
+      }
+      .tile {
+        font-size: 0.9em;
+        padding: 6px;
+      }
     }
   </style>
 </head>
